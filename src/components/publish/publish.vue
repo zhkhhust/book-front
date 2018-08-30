@@ -3,11 +3,12 @@
     <div class="inner_wrapper">
       <div class="upper_form">
         <input type="text" placeholder="  标题" @focus="clearError()" v-model="title">
-        <input type="text" placeholder="  URL" @focus="clearError()" v-model="url">
-        <input type="text" placeholder="  标签" @focus="clearError()" @keyup="dealWithTags()" v-model="tags" maxlength="20">
+        <input type="number" placeholder="  标价" @focus="clearError()" v-model="unitPrice">
+        <input type="number" placeholder="  售价" @focus="clearError()" v-model="sellPrice">
+        <input type="number" placeholder=" 发行量" @focus="clearError()" v-model="capicity">
       </div>
       <div class="lower_form">
-        <textarea placeholder="文章内容(最多4096个字符)" maxlength="4096" v-model="text"></textarea>
+        <textarea placeholder="书籍介绍(最多4096个字符)" maxlength="4096" v-model="text"></textarea>
         <div class="btn btn_1"  @click="postarticle()">提交</div>
         <div class="btn btn_2" @click="closeModal()">取消</div>
       </div>
@@ -16,14 +17,16 @@
 </template>
 
 <script>
+  // id, tid, ownerId, timestamp, title, text, unitPrice, sellPrice, capicity, sellState, gainWay, sellNumber
   export default {
     name: 'publish',
     data: function () {
       return {
         title: '',
-        url: '',
+        unitPrice: undefined,
         text: '',
-        tags: '',
+        sellPrice: undefined,
+        capicity: undefined,
         isError: false,
         errorMsg: ''
       }
@@ -38,41 +41,8 @@
           this.$store.commit('callToast', {msgHeader: '警告', msgContent: '发布文章的内容长度要小于4096字节', _confirmfunc: '确定', _cancelfunc: '关闭', deals: undefined, contract: 4})
           return
         }
-        if (this.text !== '' && this.url !== '') {
-          this.isError = true
-          this.errorMsg = '网络地址与文章内容只能选填一个'
-          this.$store.commit('callToast', {msgHeader: '发生错误', msgContent: this.errorMsg, _confirmfunc: '确定', _cancelfunc: '关闭', deals: undefined, contract: 4})
-          return
-        } else if (this.text === '' && this.url === '') {
-          this.isError = true
-          this.errorMsg = '网络地址与文章内容至少要填一项'
-          this.$store.commit('callToast', {msgHeader: '发生错误', msgContent: this.errorMsg, _confirmfunc: '了解', _cancelfunc: '关闭', deals: undefined, contract: 4})
-          return
-        } else {
-          // 处理网址
-          if (this.url !== '') {
-            let reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?/
-            if (reg.test(this.url)) {
-              let tagArr = this.pushInEvent
-              that.$store.dispatch('invokeContract', {
-                type: 1000,
-                fee: '10000000',
-                args: tagArr,
-                that: that,
-                callback: function (err, res) {
-                  if (err) {
-                    return
-                  }
-                  that.$store.commit('callToast', {msgHeader: '成功！', msgContent: '发布文章成功！大约十秒后看到更新', _confirmfunc: '了解', _cancelfunc: '关闭', deals: undefined, contract: 4})
-                  window.history.go(-1)
-                }
-              })
-            } else {
-              // 错误处理
-              this.$store.commit('callToast', {msgHeader: '发生错误', msgContent: '请确认是否输入正确的网址，推荐直接复制', _confirmfunc: '了解', _cancelfunc: '关闭', deals: undefined, contract: 4})
-            }
-            return
-          } else {
+        // title, text, unitPrice, sellPrice, capacity)
+        if (true) {
             // 文章传入
             let tagArr = this.pushInEvent
             that.$store.dispatch('invokeContract', {
@@ -123,13 +93,13 @@
         let arr = []
         let aftTitle = this.title.trim()
         arr.push(aftTitle)
-        arr.push(this.url)
-        // 格式化text($(_temp))
         let texta = this.text
         texta.replace(/\n/g, 'duri')
         console.log(texta)
         arr.push(texta)
-        arr.push(this.tags)
+        arr.push(this.unitPrice)
+        arr.push(this.sellPrice)
+        arr.push(this.capacity)
         return arr
       }
     },
