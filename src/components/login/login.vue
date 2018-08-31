@@ -2,7 +2,7 @@
   <div class="loginform">
     <div class="inner-wrap">
       <span class="title">用户登录</span>
-      <input type="password" class="password" v-model="secret" minlength="20"  placeholder="  请输入密钥">
+      <input class="password" v-model="secret" minlength="20"  placeholder="  请输入密钥">
       <a class="signUp" href="http://wallet.entanmo.com/#/login" target="_blank">尚未拥有账户？</a>
       <div class="loginbtn loginbtn1" @click="toLogin()">登录</div>
       <div class="loginbtn loginbtn2" @click="toNotLogin()">取消</div>
@@ -18,7 +18,7 @@
     },
     data: function () {
       return {
-        secret: ''
+        secret: 'toss snake silver call panther tiny day media quiz buzz depart recycle'
       }
     },
     methods: {

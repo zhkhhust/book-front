@@ -5,10 +5,10 @@
         <input type="text" placeholder="  标题" @focus="clearError()" v-model="title">
         <input type="number" placeholder="  标价" @focus="clearError()" v-model="unitPrice">
         <input type="number" placeholder="  售价" @focus="clearError()" v-model="sellPrice">
-        <input type="number" placeholder=" 发行量" @focus="clearError()" v-model="capicity">
+        <input type="number" placeholder="  发行量" @focus="clearError()" v-model="capacity">
       </div>
       <div class="lower_form">
-        <textarea placeholder="书籍介绍(最多4096个字符)" maxlength="4096" v-model="text"></textarea>
+        <textarea placeholder="文章内容(最多4096个字符)" maxlength="4096" v-model="text"></textarea>
         <div class="btn btn_1"  @click="postarticle()">提交</div>
         <div class="btn btn_2" @click="closeModal()">取消</div>
       </div>
@@ -17,16 +17,15 @@
 </template>
 
 <script>
-  // id, tid, ownerId, timestamp, title, text, unitPrice, sellPrice, capicity, sellState, gainWay, sellNumber
   export default {
     name: 'publish',
     data: function () {
       return {
         title: '',
-        unitPrice: undefined,
+        unitPrice: 100,
+        sellPrice: 100,
         text: '',
-        sellPrice: undefined,
-        capicity: undefined,
+        capacity: 10000,
         isError: false,
         errorMsg: ''
       }
@@ -41,25 +40,20 @@
           this.$store.commit('callToast', {msgHeader: '警告', msgContent: '发布文章的内容长度要小于4096字节', _confirmfunc: '确定', _cancelfunc: '关闭', deals: undefined, contract: 4})
           return
         }
-        // title, text, unitPrice, sellPrice, capacity)
-        if (true) {
-            // 文章传入
-            let tagArr = this.pushInEvent
-            that.$store.dispatch('invokeContract', {
-              type: 1000,
-              fee: '10000000',
-              args: tagArr,
-              that: that,
-              callback: function (err, res) {
-                if (err) {
-                  return
-                }
-                that.$store.commit('callToast', {msgHeader: '成功！', msgContent: '发布文章成功！大约十秒后看到更新', _confirmfunc: '了解', _cancelfunc: '关闭', deals: undefined, contract: 4})
-                that.$router.back()
-              }
-            })
+        let tagArr = this.pushInEvent
+        that.$store.dispatch('invokeContract', {
+          type: 1000,
+          fee: '10000000',
+          args: tagArr,
+          that: that,
+          callback: function (err, res) {
+            if (err) {
+              return
+            }
+            that.$store.commit('callToast', {msgHeader: '成功！', msgContent: '发布文章成功！大约十秒后看到更新', _confirmfunc: '了解', _cancelfunc: '关闭', deals: undefined, contract: 4})
+            window.history.go(-1)
           }
-        }
+        })
       },
       clearError: function () {
         this.isError = false
@@ -89,10 +83,12 @@
       }
     },
     computed: {
+      // (title, text, unitPrice, sellPrice, capacity)
       pushInEvent: function () {
         let arr = []
         let aftTitle = this.title.trim()
         arr.push(aftTitle)
+        // 格式化text($(_temp))
         let texta = this.text
         texta.replace(/\n/g, 'duri')
         console.log(texta)

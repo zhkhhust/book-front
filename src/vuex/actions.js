@@ -3,7 +3,8 @@ import Identicon from 'identicon.js'
 import etmJS from 'etm-js'
 // 存储异步操作,获取数据用commit操作mutation
 // let baseUrl = 'http://127.0.0.1:4096/api/dapps/1a351d2092cf3bd9e4289372fccf39e3e7af02d4eef62f266c58b07e02226f1b' // 测试环境
-let baseUrl = 'http://140.143.122.232:4096/api/dapps/ef7f4fca1cb38e8ec3ecf4daa0722b89a560c19b45a994af059b5b8e9a95b3ce' // 真实环境
+// let baseUrl = 'http://140.143.122.232:4096/api/dapps/ef7f4fca1cb38e8ec3ecf4daa0722b89a560c19b45a994af059b5b8e9a95b3ce' // asch 下的book
+let baseUrl = 'http://132.232.20.146:4096/api/dapps/d71f5e55624ad4e98f5c4e9ad3ba5cf611cc87b558973d0e3fee67f7b5728cdc' // etm 下到book
 // let loginurl = baseUrl + '/login'测试环境下login传输， 有暴露secret可能
 let loginurl = baseUrl + '/accounts/'
 // 测试环境
